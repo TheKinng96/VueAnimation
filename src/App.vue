@@ -10,7 +10,9 @@
         </select>
         <br />
         <br />
-        <button class="btn btn-primary" @click="show = !show">Show Alert</button>
+        <button class="btn btn-primary" @click="show = !show">
+          Show Alert
+        </button>
         <br />
         <br />
         <transition
@@ -24,11 +26,17 @@
           <div class="alert alert-info" v-if="show">This is some Info</div>
         </transition>
         <transition :name="alertAnimation" mode="out-in">
-          <div class="alert alert-info" v-if="show" key="info">This is some Info</div>
-          <div class="alert alert-warning" v-else key="warning">This is some Warning</div>
+          <div class="alert alert-info" v-if="show" key="info">
+            This is some Info
+          </div>
+          <div class="alert alert-warning" v-else key="warning">
+            This is some Warning
+          </div>
         </transition>
         <hr />
-        <button class="btn btn-primary" @click="load= !load">Load ? Remove Element</button>
+        <button class="btn btn-primary" @click="load = !load">
+          Load ? Remove Element
+        </button>
         <br />
         <br />
         <transition
@@ -42,18 +50,42 @@
           @leave-cancelled="leaveCancelled"
           :css="false"
         >
-          <div style="width: 300px; height: 100px; background-color:lightgreen" v-if="load"></div>
+          <div
+            style="width: 300px; height: 100px; background-color:lightgreen"
+            v-if="load"
+          ></div>
         </transition>
         <hr />
         <button
           class="btn btn-primary"
-          @click="selectedComponent == 'app-success-alert' ?selectedComponent = 'app-danger-alert' : selectedComponent = 'app-success-alert'"
-          @keydown="console.log(selectedComponent)"
-        >Toggle Component</button>
+          @click="
+            selectedComponent == 'app-success-alert'
+              ? (selectedComponent = 'app-danger-alert')
+              : (selectedComponent = 'app-success-alert')
+          "
+        >
+          Toggle Component
+        </button>
         <br />
-        <component :is="seletedComponent"></component>
-        <app-danger-alert></app-danger-alert>
-        <app-success-alert></app-success-alert>
+        <br />
+        <transition name="fade" mode="out-in">
+          <component :is="selectedComponent"></component>
+        </transition>
+        <hr />
+        <button class="btn btn-primary" @click="addItem">Add Item</button>
+        <br />
+        <br />
+        <ul class="list-group">
+          <li
+            class="list-group-item"
+            v-for="(item, index) in numbers"
+            :key="index"
+            @click="removeItem(index)"
+            style="cursor:pointer"
+          >
+            {{ item }}
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -71,6 +103,7 @@ export default {
       alertAnimation: "fade",
       elementWidth: 100,
       selectedComponent: "app-success-alert",
+      numbers: [1, 2, 3, 4, 5]
     };
   },
   methods: {
@@ -121,11 +154,18 @@ export default {
     leaveCancelled(el) {
       console.log("leaveCancelled");
     },
+    addItem() {
+      const newNum = Math.floor(Math.random() * this.numbers.length);
+      this.numbers.splice(newNum, 0, this.numbers.length + 1);
+    },
+    removeItem(index) {
+      this.numbers.splice(index, 1);
+    }
   },
   components: {
     appDangerAlert: DangerAlert,
-    appSuccessAlert: SuccessAlert,
-  },
+    appSuccessAlert: SuccessAlert
+  }
 };
 </script>
 
